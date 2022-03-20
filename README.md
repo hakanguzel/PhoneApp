@@ -1,7 +1,9 @@
 # PhoneApp
 
 Basit bir telefon rehberi uygulamasıdır. Microservis yapısıdr.
-![Mimari](https://github.com/hakanguzel/PhoneApp/files/diagram.png)
+
+
+![Mimari](https://github.com/hakanguzel/PhoneApp/blob/dev/files/diagram.png)
 
     
 ## API Kullanımı
