@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\PhoneApp.Core.Application\PhoneApp.Core.Application.csproj" />
+    <ProjectReference Include="..\..\Core\PhoneApp.Core.Infrastructure\PhoneApp.Core.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Services\ReportService\PhoneApp.ReportService.Application\PhoneApp.ReportService.Application.csproj" />
+  </ItemGroup>
+
+</Project>

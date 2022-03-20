@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Core\PhoneApp.Core.Infrastructure\PhoneApp.Core.Infrastructure.csproj" />
+		<ProjectReference Include="..\PhoneApp.ReportService.Domain\PhoneApp.ReportService.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

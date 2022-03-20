@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\PhoneApp.Core.Application\PhoneApp.Core.Application.csproj" />
+    <ProjectReference Include="..\PhoneApp.UserService.Domain\PhoneApp.UserService.Domain.csproj" />
+    <ProjectReference Include="..\PhoneApp.UserService.Domain\PhoneApp.UserService.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
