@@ -1,0 +1,25 @@
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["src/Services/ReportService/PhoneApp.ReportService.API/PhoneApp.ReportService.API.csproj", "src/Services/ReportService/PhoneApp.ReportService.API/"]
+COPY ["src/Services/ReportService/PhoneApp.ReportService.Infrastructure/PhoneApp.ReportService.Infrastructure.csproj", "src/Services/ReportService/PhoneApp.ReportService.Infrastructure/"]
+COPY ["src/Core/PhoneApp.Core.Infrastructure/PhoneApp.Core.Infrastructure.csproj", "src/Core/PhoneApp.Core.Infrastructure/"]
+COPY ["src/Core/PhoneApp.Core.Domain/PhoneApp.Core.Domain.csproj", "src/Core/PhoneApp.Core.Domain/"]
+COPY ["src/Services/ReportService/PhoneApp.ReportService.Domain/PhoneApp.ReportService.Domain.csproj", "src/Services/ReportService/PhoneApp.ReportService.Domain/"]
+COPY ["src/Core/PhoneApp.Core.Application/PhoneApp.Core.Application.csproj", "src/Core/PhoneApp.Core.Application/"]
+COPY ["src/Services/ReportService/PhoneApp.ReportService.Application/PhoneApp.ReportService.Application.csproj", "src/Services/ReportService/PhoneApp.ReportService.Application/"]
+RUN dotnet restore "src/Services/ReportService/PhoneApp.ReportService.API/PhoneApp.ReportService.API.csproj"
+COPY . .
+WORKDIR "/src/src/Services/ReportService/PhoneApp.ReportService.API"
+RUN dotnet build "PhoneApp.ReportService.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "PhoneApp.ReportService.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "PhoneApp.ReportService.API.dll"]

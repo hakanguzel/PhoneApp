@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["src/Consumers/PhoneApp.Consumer.Report/PhoneApp.Consumer.Report.csproj", "src/Consumers/PhoneApp.Consumer.Report/"]
+COPY ["src/Core/PhoneApp.Core.Infrastructure/PhoneApp.Core.Infrastructure.csproj", "src/Core/PhoneApp.Core.Infrastructure/"]
+COPY ["src/Core/PhoneApp.Core.Domain/PhoneApp.Core.Domain.csproj", "src/Core/PhoneApp.Core.Domain/"]
+COPY ["src/Core/PhoneApp.Core.Application/PhoneApp.Core.Application.csproj", "src/Core/PhoneApp.Core.Application/"]
+RUN dotnet restore "src/Consumers/PhoneApp.Consumer.Report/PhoneApp.Consumer.Report.csproj"
+COPY . .
+WORKDIR "/src/src/Consumers/PhoneApp.Consumer.Report"
+RUN dotnet build "PhoneApp.Consumer.Report.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "PhoneApp.Consumer.Report.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "PhoneApp.Consumer.Report.dll"]

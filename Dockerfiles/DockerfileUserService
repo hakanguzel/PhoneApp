@@ -1,0 +1,25 @@
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["src/Services/UserService/PhoneApp.UserService.API/PhoneApp.UserService.API.csproj", "src/Services/UserService/PhoneApp.UserService.API/"]
+COPY ["src/Core/PhoneApp.Core.Domain/PhoneApp.Core.Domain.csproj", "src/Core/PhoneApp.Core.Domain/"]
+COPY ["src/Services/UserService/PhoneApp.UserService.Application/PhoneApp.UserService.Application.csproj", "src/Services/UserService/PhoneApp.UserService.Application/"]
+COPY ["src/Core/PhoneApp.Core.Application/PhoneApp.Core.Application.csproj", "src/Core/PhoneApp.Core.Application/"]
+COPY ["src/Services/UserService/PhoneApp.UserService.Domain/PhoneApp.UserService.Domain.csproj", "src/Services/UserService/PhoneApp.UserService.Domain/"]
+COPY ["src/Core/PhoneApp.Core.Infrastructure/PhoneApp.Core.Infrastructure.csproj", "src/Core/PhoneApp.Core.Infrastructure/"]
+COPY ["src/Services/UserService/PhoneApp.UserService.Infrastructure/PhoneApp.UserService.Infrastructure.csproj", "src/Services/UserService/PhoneApp.UserService.Infrastructure/"]
+RUN dotnet restore "src/Services/UserService/PhoneApp.UserService.API/PhoneApp.UserService.API.csproj"
+COPY . .
+WORKDIR "/src/src/Services/UserService/PhoneApp.UserService.API"
+RUN dotnet build "PhoneApp.UserService.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "PhoneApp.UserService.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "PhoneApp.UserService.API.dll"]
